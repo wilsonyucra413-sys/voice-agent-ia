@@ -1,1 +1,15 @@
-venv
+# Entornos virtuales
+.venv/
+
+# Archivos de Python compilados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de logs
+*.log
+
+# Configuración de VSCode o PyCharm (opcional)
+.vscode/
+.idea/
