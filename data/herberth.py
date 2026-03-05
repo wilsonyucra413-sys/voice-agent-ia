@@ -42,19 +42,31 @@ def extraer_entidad(texto):
     return None
 
 if __name__ == "__main__":
-    entrenar()
+    entrenar() 
     
     pruebas = [
-        "hola que tal agente",
-        "puedes abrir el brave",
-        "ponme algo de musica",
-        "corre mi script",
-        "ya me voy adios",
-        "quien eres",
-        "abre la calculadora rapido"
+        "hola agente",
+        "abrir el navegador brave",
+        "reproducir musica youtube",
+        "corre el script",
+        "adiós",
+        "quien eres tu",
+        "abre la calculadora",
+        "hola"
     ]
     
-    print("\n--- TEST DE ESTRÉS DE LA IA ---")
-    for t in pruebas:
-        prediccion = detectar_intencion(t.lower())
-        print(f"FRASE: {t:30} | INTENCION: {prediccion}")
+    print("\n" + "="*80)
+    print(f"{'FRASE ENTRADA':<30} | {'INTENCION':<20} | {'ENTIDAD'}")
+    print("-" * 80)
+
+    for frase in pruebas:
+        texto_procesar = frase.lower()
+        
+        intento = detectar_intencion(texto_procesar)
+        entidad = extraer_entidad(texto_procesar)
+        
+        display_entidad = entidad if entidad else "---"
+        
+        print(f"{frase:<30} | {intento:<20} | {display_entidad}")
+
+    print("="*80 + "\n")
