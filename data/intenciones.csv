@@ -11,10 +11,10 @@ que onda,SALUDO
 habla asistente,SALUDO
 waza,SALUDO
 buenas,SALUDO
-asistente estas ahí,SALUDO
+asistente estas ahi,SALUDO
 activar sistema,SALUDO
-activar, SALUDO
-encender, SALUDO
+activar,SALUDO
+encender,SALUDO
 abre el navegador,ABRIR_APP
 entra a internet,ABRIR_APP
 abre mis archivos,ABRIR_APP
@@ -63,24 +63,41 @@ detener reproduccion,CERRAR_APP
 quita el bloc de notas,CERRAR_APP
 cierra sesion de usuario,CERRAR_APP
 terminar ejecucion,CERRAR_APP
-sal de aqui,CERRAR_APP
-pon un video en youtube,REPRODUCIR_MEDIA
-reproduce musica en spotify,REPRODUCIR_MEDIA
-quiero escuchar musica,REPRODUCIR_MEDIA
-reproducir musica en youtube,REPRODUCIR_MEDIA
-pon algo de musica,REPRODUCIR_MEDIA
-reproduce un video de risa,REPRODUCIR_MEDIA
-pon musica para estudiar,REPRODUCIR_MEDIA
-quiero escuchar rock en youtube,REPRODUCIR_MEDIA
-dale play a la lista de reproduccion,REPRODUCIR_MEDIA
-pon canciones en youtube,REPRODUCIR_MEDIA
-reproduce mi mix diario,REPRODUCIR_MEDIA
-ponme jazz relajante,REPRODUCIR_MEDIA
-pon el podcast de ayer,REPRODUCIR_MEDIA
-reproduce la siguiente cancion,REPRODUCIR_MEDIA
-pon musica de los 80,REPRODUCIR_MEDIA
-reproduce el video que deje a medias,REPRODUCIR_MEDIA
-quiero oir baladas,REPRODUCIR_MEDIA
+sal de aqui,APAGAR_EQUIPO
+apaga la computadora,APAGAR_EQUIPO
+apagar la computadora,APAGAR_EQUIPO
+apagate equipo,APAGAR_EQUIPO
+apagar sistema,APAGAR_EQUIPO
+apagar el ordenador,APAGAR_EQUIPO
+apagar pc,APAGAR_EQUIPO
+apagate computadora,APAGAR_EQUIPO
+computadora cierrate,APAGAR_EQUIPO
+detener sistema operativo,APAGAR_EQUIPO
+apagate ahora mismo,APAGAR_EQUIPO
+busca en internet quien es messi,BUSCAR_WEB
+busca que es la fotosintesis,BUSCAR_WEB
+investiga sobre el esternocleidomastoideo,BUSCAR_WEB
+que es la inteligencia artificial,BUSCAR_WEB
+googlea como programar en python,BUSCAR_WEB
+busca que hora es en japon,BUSCAR_WEB
+busca en google el clima de hoy,BUSCAR_WEB
+necesito informacion sobre bolivia,BUSCAR_WEB
+quien gano el partido de ayer,BUSCAR_WEB
+busca recetas de cocina,BUSCAR_WEB
+que significa la palabra empatia,BUSCAR_WEB
+investiga la historia de tarija,BUSCAR_WEB
+reproduce tuna papita,BUSCAR_YOUTUBE
+pon musica de los prisioneros,BUSCAR_YOUTUBE
+reproduce el video de shakira,BUSCAR_YOUTUBE
+busca en youtube como hacer pan,BUSCAR_YOUTUBE
+reproduce musica relajante,BUSCAR_YOUTUBE
+quiero escuchar cuarteto de nos,BUSCAR_YOUTUBE
+pon videos de gatitos,BUSCAR_YOUTUBE
+ponme jazz para estudiar,BUSCAR_YOUTUBE
+busca en youtube trailers de peliculas,BUSCAR_YOUTUBE
+reproduce el podcast de wild project,BUSCAR_YOUTUBE
+reproducir canciones de rock,BUSCAR_YOUTUBE
+pon un tutorial de blender,BUSCAR_YOUTUBE
 corre el script de limpieza,EJECUTAR_SCRIPT
 ejecuta el codigo de respaldo,EJECUTAR_SCRIPT
 inicia la automatizacion,EJECUTAR_SCRIPT
@@ -112,7 +129,6 @@ como va el uso de la cpu,INFORMACION
 dime la temperatura de la ciudad,INFORMACION
 tengo notificaciones pendientes,INFORMACION
 quien gano el partido de hoy,INFORMACION
-busca en wikipedia inteligencia artificial,INFORMACION
 adios gracias,DESPEDIDA
 hasta luego agente,DESPEDIDA
 apagate ahora,DESPEDIDA
