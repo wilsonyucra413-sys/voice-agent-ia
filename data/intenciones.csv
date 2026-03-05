@@ -1,52 +1,129 @@
 texto,intencion
 hola,SALUDO
-hola como estas,SALUDO
 buenos dias,SALUDO
 buenas tardes,SALUDO
+buenas noches,SALUDO
 hey que tal,SALUDO
-hola agente,SALUDO
-despierta,SALUDO
 como estas hoy,SALUDO
-saludos,SALUDO
-ya tu sabe,SALUDO
+despierta agente,SALUDO
+saludos computadora,SALUDO
 que onda,SALUDO
-abrir brave,ABRIR_APP
-inicia el navegador brave,ABRIR_APP
-abre chrome,ABRIR_APP
-puedes abrir firefox,ABRIR_APP
+habla asistente,SALUDO
+waza,SALUDO
+buenas,SALUDO
+asistente estas ahí,SALUDO
+activar sistema,SALUDO
+activar, SALUDO
+encender, SALUDO
+abre el navegador,ABRIR_APP
+entra a internet,ABRIR_APP
+abre mis archivos,ABRIR_APP
+necesito la calculadora,ABRIR_APP
+abre el visual studio code,ABRIR_APP
+abre la consola de comandos,ABRIR_APP
+inicia el explorador de carpetas,ABRIR_APP
 inicia la calculadora,ABRIR_APP
-abre el bloc de notas,ABRIR_APP
-ejecutar excel,ABRIR_APP
-abre visual studio code,ABRIR_APP
-iniciar spotify,ABRIR_APP
-abre el terminal,ABRIR_APP
+ejecuta visual studio code,ABRIR_APP
+quiero usar el terminal,ABRIR_APP
+lanza el navegador brave,ABRIR_APP
+puedes abrir firefox,ABRIR_APP
+necesito spotify,ABRIR_APP
+activa la terminal de comandos,ABRIR_APP
+pon el bloc de notas,ABRIR_APP
+abre google chrome,ABRIR_APP
+lanza discord,ABRIR_APP
+ejecuta el panel de control,ABRIR_APP
+abre la terminal de ubuntu,ABRIR_APP
+quiero ver mis documentos,ABRIR_APP
+abre el gestor de tareas,ABRIR_APP
+ponme el correo electronico,ABRIR_APP
+abre steam,ABRIR_APP
+inicia microsoft word,ABRIR_APP
+abre excel,ABRIR_APP
+lanza la camara,ABRIR_APP
+quiero jugar,ABRIR_APP
+ponme un juego,ABRIR_APP
+necesito ver mis archivos,ABRIR_APP
+abre mis documentos,ABRIR_APP
+quiero navegar por internet,ABRIR_APP
+dame acceso a la red,ABRIR_APP
+cierra el navegador,CERRAR_APP
+apaga la musica,CERRAR_APP
+quitar el visual studio,CERRAR_APP
+terminar proceso de firefox,CERRAR_APP
+apaga la calculadora,CERRAR_APP
+quita el visual studio code,CERRAR_APP
+detener spotify,CERRAR_APP
+cierra todas las ventanas,CERRAR_APP
+sal de la terminal,CERRAR_APP
+finaliza el programa,CERRAR_APP
+mata el proceso de brave,CERRAR_APP
+cierra la pestaña,CERRAR_APP
+detener reproduccion,CERRAR_APP
+quita el bloc de notas,CERRAR_APP
+cierra sesion de usuario,CERRAR_APP
+terminar ejecucion,CERRAR_APP
+sal de aqui,CERRAR_APP
+pon un video en youtube,REPRODUCIR_MEDIA
+reproduce musica en spotify,REPRODUCIR_MEDIA
+quiero escuchar musica,REPRODUCIR_MEDIA
 reproducir musica en youtube,REPRODUCIR_MEDIA
-pon musica,REPRODUCIR_MEDIA
-reproduce algo en youtube,REPRODUCIR_MEDIA
-pon un video de risa,REPRODUCIR_MEDIA
-reproduce mi lista de reproduccion,REPRODUCIR_MEDIA
+pon algo de musica,REPRODUCIR_MEDIA
+reproduce un video de risa,REPRODUCIR_MEDIA
 pon musica para estudiar,REPRODUCIR_MEDIA
-reproduce un mix,REPRODUCIR_MEDIA
-quiero ver youtube,REPRODUCIR_MEDIA
-abre youtube y reproduce algo,REPRODUCIR_MEDIA
-pon canciones de rock,REPRODUCIR_MEDIA
+quiero escuchar rock en youtube,REPRODUCIR_MEDIA
+dale play a la lista de reproduccion,REPRODUCIR_MEDIA
+pon canciones en youtube,REPRODUCIR_MEDIA
+reproduce mi mix diario,REPRODUCIR_MEDIA
+ponme jazz relajante,REPRODUCIR_MEDIA
+pon el podcast de ayer,REPRODUCIR_MEDIA
+reproduce la siguiente cancion,REPRODUCIR_MEDIA
+pon musica de los 80,REPRODUCIR_MEDIA
+reproduce el video que deje a medias,REPRODUCIR_MEDIA
+quiero oir baladas,REPRODUCIR_MEDIA
 corre el script de limpieza,EJECUTAR_SCRIPT
-ejecuta el proceso de respaldo,EJECUTAR_SCRIPT
-inicia el script de python,EJECUTAR_SCRIPT
+ejecuta el codigo de respaldo,EJECUTAR_SCRIPT
+inicia la automatizacion,EJECUTAR_SCRIPT
+lanza el proceso de compilacion,EJECUTAR_SCRIPT
+ejecuta mi script de python,EJECUTAR_SCRIPT
+corre el binario,EJECUTAR_SCRIPT
+inicia el despliegue,EJECUTAR_SCRIPT
 ejecutar comando de red,EJECUTAR_SCRIPT
-corre la automatizacion,EJECUTAR_SCRIPT
-inicia el proceso de compilacion,EJECUTAR_SCRIPT
-ejecuta mi codigo,EJECUTAR_SCRIPT
-cerrar el programa,DESPEDIDA
-adios gracias,DESPEDIDA
-terminar sesion,DESPEDIDA
-apagate,DESPEDIDA
-hasta luego,DESPEDIDA
-chao,DESPEDIDA
-dejar de trabajar,DESPEDIDA
-salir del asistente,DESPEDIDA
-que hora es,INFORMACION
+corre el test unitario,EJECUTAR_SCRIPT
+compila el proyecto,EJECUTAR_SCRIPT
+corre el comando npm start,EJECUTAR_SCRIPT
+ejecuta el bash de instalacion,EJECUTAR_SCRIPT
+lanza el servidor local,EJECUTAR_SCRIPT
+ejecuta la migracion de base de datos,EJECUTAR_SCRIPT
+corre el bot de telegram,EJECUTAR_SCRIPT
+que hora es ahora,INFORMACION
 dime la fecha de hoy,INFORMACION
 como esta el clima,INFORMACION
+cual es el pronostico del tiempo,INFORMACION
 quien eres tu,INFORMACION
-cual es tu nombre,INFORMACION
+dime tu nombre,INFORMACION
+que dia es hoy,INFORMACION
+que puedes hacer por mi,INFORMACION
+dime la hora actual,INFORMACION
+cuanta bateria queda,INFORMACION
+cual es mi direccion ip,INFORMACION
+que noticias hay hoy,INFORMACION
+como va el uso de la cpu,INFORMACION
+dime la temperatura de la ciudad,INFORMACION
+tengo notificaciones pendientes,INFORMACION
+quien gano el partido de hoy,INFORMACION
+busca en wikipedia inteligencia artificial,INFORMACION
+adios gracias,DESPEDIDA
+hasta luego agente,DESPEDIDA
+apagate ahora,DESPEDIDA
+terminar sesion,DESPEDIDA
+chau nos vemos,DESPEDIDA
+salir del sistema,DESPEDIDA
+detener asistente,DESPEDIDA
+vete a dormir,DESPEDIDA
+ya no te necesito adios,DESPEDIDA
+nos vemos mañana,DESPEDIDA
+cierra todo y apaga,DESPEDIDA
+hasta la vista,DESPEDIDA
+descansa,DESPEDIDA
+finalizar asistente,DESPEDIDA
