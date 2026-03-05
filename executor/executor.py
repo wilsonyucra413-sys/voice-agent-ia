@@ -1,41 +1,20 @@
 import subprocess
 import psutil
 import time
-import shutil
-import socket
+from verifier.verifier import validar_apertura_app
 
 
-# 🔎 Verificar si hay internet
-def hay_internet():
-    try:
-        socket.create_connection(("8.8.8.8", 53), timeout=3)
-        return True
-    except OSError:
-        return False
-
-
-# 🔎 Verificar si la app existe
-def app_instalada(nombre_app):
-    return shutil.which(nombre_app) is not None
-
-
-# 🚀 Abrir aplicación con validaciones
 def abrir_app(nombre_app):
 
-    # 1️⃣ Verificar si está instalada
-    if not app_instalada(nombre_app):
-        return False, f"La aplicación '{nombre_app}' no está instalada"
+    valido, mensaje = validar_apertura_app(nombre_app)
 
-    # 2️⃣ Si es navegador, verificar internet
-    if nombre_app in ["firefox", "google-chrome", "chromium"]:
-        if not hay_internet():
-            return False, "No hay conexión a internet"
+    if not valido:
+        return False, mensaje
 
     try:
         subprocess.Popen(nombre_app)
         time.sleep(3)
 
-        # 3️⃣ Verificar si el proceso está activo
         for proceso in psutil.process_iter(['name']):
             if nombre_app.lower() in proceso.info['name'].lower():
                 return True, f"{nombre_app} se abrió correctamente"
@@ -46,7 +25,6 @@ def abrir_app(nombre_app):
         return False, f"Error al abrir {nombre_app}: {str(e)}"
 
 
-# 🧾 Ejecutar script
 def ejecutar_script(ruta_script):
     try:
         resultado = subprocess.run(
@@ -64,7 +42,6 @@ def ejecutar_script(ruta_script):
         return False, f"Error ejecutando script: {str(e)}"
 
 
-# 🎯 Función principal
 def ejecutar_accion(intencion, entidad):
 
     if intencion == "ABRIR_APP":
