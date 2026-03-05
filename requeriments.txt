@@ -1,1 +1,6 @@
+Cristhian
 pip install psutil
+
+
+Herberth
+pip install pandas scikit-learn
