@@ -1,0 +1,52 @@
+texto,intencion
+hola,SALUDO
+hola como estas,SALUDO
+buenos dias,SALUDO
+buenas tardes,SALUDO
+hey que tal,SALUDO
+hola agente,SALUDO
+despierta,SALUDO
+como estas hoy,SALUDO
+saludos,SALUDO
+ya tu sabe,SALUDO
+que onda,SALUDO
+abrir brave,ABRIR_APP
+inicia el navegador brave,ABRIR_APP
+abre chrome,ABRIR_APP
+puedes abrir firefox,ABRIR_APP
+inicia la calculadora,ABRIR_APP
+abre el bloc de notas,ABRIR_APP
+ejecutar excel,ABRIR_APP
+abre visual studio code,ABRIR_APP
+iniciar spotify,ABRIR_APP
+abre el terminal,ABRIR_APP
+reproducir musica en youtube,REPRODUCIR_MEDIA
+pon musica,REPRODUCIR_MEDIA
+reproduce algo en youtube,REPRODUCIR_MEDIA
+pon un video de risa,REPRODUCIR_MEDIA
+reproduce mi lista de reproduccion,REPRODUCIR_MEDIA
+pon musica para estudiar,REPRODUCIR_MEDIA
+reproduce un mix,REPRODUCIR_MEDIA
+quiero ver youtube,REPRODUCIR_MEDIA
+abre youtube y reproduce algo,REPRODUCIR_MEDIA
+pon canciones de rock,REPRODUCIR_MEDIA
+corre el script de limpieza,EJECUTAR_SCRIPT
+ejecuta el proceso de respaldo,EJECUTAR_SCRIPT
+inicia el script de python,EJECUTAR_SCRIPT
+ejecutar comando de red,EJECUTAR_SCRIPT
+corre la automatizacion,EJECUTAR_SCRIPT
+inicia el proceso de compilacion,EJECUTAR_SCRIPT
+ejecuta mi codigo,EJECUTAR_SCRIPT
+cerrar el programa,DESPEDIDA
+adios gracias,DESPEDIDA
+terminar sesion,DESPEDIDA
+apagate,DESPEDIDA
+hasta luego,DESPEDIDA
+chao,DESPEDIDA
+dejar de trabajar,DESPEDIDA
+salir del asistente,DESPEDIDA
+que hora es,INFORMACION
+dime la fecha de hoy,INFORMACION
+como esta el clima,INFORMACION
+quien eres tu,INFORMACION
+cual es tu nombre,INFORMACION
