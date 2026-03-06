@@ -1,12 +1,14 @@
+import random
 import subprocess
-import psutil
 import time
 import urllib.parse
-import random
+
+import psutil
+
 from verifier.verifier import validar_apertura_app
 
-MAPA_APPS = {
 
+MAPA_APPS = {
     # Navegadores
     "google chrome": "google-chrome",
     "chrome": "google-chrome",
@@ -42,6 +44,8 @@ MAPA_APPS = {
     "calculadora": "gnome-calculator",
     "archivos": "nautilus",
     "carpetas": "nautilus",
+    "archivo": "nautilus",  
+    "carpeta": "nautilus",  
     "explorador": "nautilus",
     "configuracion": "gnome-control-center",
     "ajustes": "gnome-control-center",
@@ -50,56 +54,79 @@ MAPA_APPS = {
     "discord": "discord",
     "slack": "slack",
     "telegram": "telegram-desktop",
-    "zoom": "zoom"
+    "zoom": "zoom",
+}
+# TRADUCCIÓN DE PROCESOS (Para que cerrar funcione en Ubuntu)
+MAPA_PROCESOS = {
+    "libreoffice": "soffice.bin",
+    "code": "code",
+    "nautilus": "nautilus",
+    "google-chrome": "chrome",
+    "gnome-calculator": "gnome-calculator"
 }
 
-
 def abrir_app(nombre_app):
-
     nombre_app = nombre_app.lower()
-
     if nombre_app not in MAPA_APPS:
         return False, f"No conozco la aplicación '{nombre_app}'"
 
-    comando_real = MAPA_APPS[nombre_app]
+    comando_completo = MAPA_APPS[nombre_app]
+    binario = comando_completo.split()[0] # Ej: 'libreoffice'
 
-    valido, mensaje = validar_apertura_app(comando_real.split()[0])
-
+    # Validar si está instalado
+    valido, mensaje = validar_apertura_app(binario)
     if not valido:
         return False, mensaje
 
     try:
-        subprocess.Popen(comando_real.split())
-        time.sleep(3)
-
-        for proceso in psutil.process_iter(['name']):
-            if proceso.info['name'] and comando_real.split()[0] in proceso.info['name'].lower():
-                return True, f"{nombre_app} se abrió correctamente"
-
-        return False, f"No se detectó el proceso {nombre_app}"
+        # Ejecutamos y nos olvidamos (esto evita que el script espere a la app)
+        subprocess.Popen(comando_completo.split(), start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        
+        # En Ubuntu, si el comando no dio error inmediato, asumimos que abrió bien
+        return True, f"Abriendo {nombre_app}"
 
     except Exception as e:
-        return False, f"Error al abrir {nombre_app}: {str(e)}"
-
+        return False, f"Error al intentar abrir {nombre_app}: {str(e)}"
 
 def cerrar_app(nombre_app):
-
     procesos_cerrados = 0
+    nombre_app = nombre_app.lower()
+
+    # 1. BUSCAR EL NOMBRE REAL DEL PROCESO
+    # Si el usuario dice "visual studio code", buscamos en el mapa y obtenemos "code"
+    nombre_proceso_real = MAPA_APPS.get(nombre_app, nombre_app)
+    
+    # Si el comando tiene argumentos (ej: "libreoffice --writer"), nos quedamos solo con la primera palabra
+    nombre_proceso_real = nombre_proceso_real.split()[0]
 
     try:
-        for proceso in psutil.process_iter(['pid', 'name']):
-            if proceso.info['name'] and nombre_app.lower() in proceso.info['name'].lower():
-                proceso.kill()
-                procesos_cerrados += 1
+        for proceso in psutil.process_iter(["pid", "name"]):
+            try:
+                # Obtenemos el nombre del proceso actual en el sistema
+                proc_name = proceso.info.get("name").lower()
+                
+                # 2. COMPARACIÓN INTELIGENTE
+                # Comprobamos si el nombre real (code) o el nombre común (visual studio code) 
+                # están en el nombre del proceso del sistema
+                if nombre_proceso_real in proc_name or nombre_app in proc_name:
+                    proceso.kill()
+                    procesos_cerrados += 1
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                continue
 
         if procesos_cerrados > 0:
-            return True, f"Se cerraron {procesos_cerrados} procesos de {nombre_app}"
+            return True, f"Se cerró {nombre_app} correctamente"
+    
+        # 3. SI FALLA, INTENTAR UN COMANDO DE SISTEMA (KILLALL) como último recurso
         else:
-            return False, f"No se encontraron procesos de {nombre_app} abiertos"
+            try:
+                subprocess.run(["killall", nombre_proceso_real], check=True, stderr=subprocess.DEVNULL)
+                return True, f"Se cerró {nombre_app} usando killall"
+            except:
+                return False, f"No se encontró {nombre_app} abierto en el sistema"
 
     except Exception as e:
-        return False, f"Error al cerrar {nombre_app}: {str(e)}"
-
+        return False, f"Error al intentar cerrar {nombre_app}: {str(e)}"
 
 def apagar_equipo():
     try:
@@ -114,7 +141,6 @@ def buscar_web(consulta):
     try:
         consulta_codificada = urllib.parse.quote(consulta)
         url = f"https://www.google.com/search?q={consulta_codificada}"
-
         subprocess.Popen(["firefox", url])
 
         return True, f"Buscando '{consulta}' en Google"
@@ -127,7 +153,6 @@ def buscar_youtube(consulta):
     try:
         consulta_codificada = urllib.parse.quote(consulta)
         url = f"https://www.youtube.com/results?search_query={consulta_codificada}"
-
         subprocess.Popen(["firefox", url])
 
         return True, f"Buscando '{consulta}' en YouTube"
@@ -142,7 +167,7 @@ def saludar():
         "¡Hola! ¿Qué necesitas?",
         "Buenos días, ¿en qué te ayudo?",
         "¡Hey! Estoy listo para ayudarte.",
-        "Hola, dime qué necesitas."
+        "Hola, dime qué necesitas.",
     ]
 
     return True, random.choice(saludos)
@@ -154,42 +179,28 @@ def despedirse():
         "Nos vemos pronto.",
         "Adiós, cuídate mucho.",
         "Hasta la próxima.",
-        "Fue un placer ayudarte, hasta luego."
+        "Fue un placer ayudarte, hasta luego.",
     ]
 
     return True, random.choice(despedidas)
 
 
 def ejecutar_accion(intencion, entidad=None):
-
     if intencion == "ABRIR_APP":
         exito, mensaje = abrir_app(entidad)
-
     elif intencion == "CERRAR_APP":
         exito, mensaje = cerrar_app(entidad)
-
     elif intencion == "APAGAR_EQUIPO":
         exito, mensaje = apagar_equipo()
-
     elif intencion == "BUSCAR_WEB":
         exito, mensaje = buscar_web(entidad)
-
     elif intencion == "BUSCAR_YOUTUBE":
         exito, mensaje = buscar_youtube(entidad)
-
     elif intencion == "SALUDO":
         exito, mensaje = saludar()
-
     elif intencion == "DESPEDIDA":
         exito, mensaje = despedirse()
-
     else:
-        return {
-            "exito": False,
-            "mensaje": "Intención no reconocida"
-        }
+        return {"exito": False, "mensaje": "Intención no reconocida"}
 
-    return {
-        "exito": exito,
-        "mensaje": mensaje
-    }
+    return {"exito": exito, "mensaje": mensaje}

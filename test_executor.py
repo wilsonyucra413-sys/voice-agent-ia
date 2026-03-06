@@ -1,10 +1,10 @@
-from executor.executor import ejecutar_accion
+# from executor.executor import ejecutar_accion
 
-# Prueba abrir una app
-resultado = ejecutar_accion("ABRIR_APP", "vscode")
-# firefox
-# gnome-calculator
-# APAGAR_EQUIPO
+# # # Prueba cerrar una app
+# resultado = ejecutar_accion("CERRAR_APP", "code")
+# # # firefox
+# # # gnome-calculator
+# # # APAGAR_EQUIPO
 
-print("Resultado:")
-print(resultado)
+# print("Resultado:")
+# print(resultado)

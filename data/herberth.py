@@ -3,52 +3,75 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 import pickle
 import os
-import re
 
+from nlp.nlp import LimpiarTexto
+
+# Rutas de archivos
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CSV_PATH = os.path.join(BASE_DIR, 'intenciones.csv')
 MODELO_PATH = os.path.join(BASE_DIR, 'modelo.pkl')
 VECTOR_PATH = os.path.join(BASE_DIR, 'vectorizador.pkl')
 
+# Herberth: Lista de palabras que la IA debe identificar
+# He incluido versiones en singular porque Arnold (NLP) lematiza las palabras
 APPS_CONOCIDAS = [
-    'navegador', 'internet', 'google chrome', 'chrome', 'firefox', 'brave', 'opera', 'edge',
-    'visual studio code', 'visual studio', 'vscode', 'sublime text', 'pycharm', 'terminal', 'consola', 'shell',
-    'bloc de notas', 'notepad', 'editor de texto', 'word', 'excel', 'powerpoint', 'documentos', 'hojas de calculo', 'write', 'calc',
-    'spotify', 'youtube', 'musica', 'reproductor', 'vlc', 'video', 'steam',
-    'calculadora', 'archivos', 'carpetas', 'explorador', 'configuracion', 'ajustes', 'monitor del sistema',
-    'discord', 'slack', 'whatsapp', 'telegram', 'zoom'
+    # Navegadores
+    'google chrome', 'chrome', 'firefox', 'brave', 'opera', 'edge', 'navegador', 'internet',
+    
+    # Desarrollo
+    'visual studio code', 'vscode', 'visual studio', 'sublime text', 'pycharm', 
+    'terminal', 'consola', 'shell',
+    
+    # Ofimática
+    'bloc de notas', 'notepad', 'editor de texto', 'gedit',
+    'word', 'excel', 'powerpoint', 'documentos', 'hoja de calculo',
+    
+    # Media
+    'spotify', 'vlc', 'steam', 'musica', 'video', 'youtube',
+    
+    # Sistema (Ubuntu)
+    'calculadora', 'archivos', 'archivo', 'carpeta', 'explorador', 
+    'configuracion', 'ajustes', 'ajuste', 'monitor del sistema',
+    
+    # Comunicación
+    'discord', 'slack', 'telegram', 'zoom', 'whatsapp'
 ]
-
+# SOLUCIÓN: Gatillos simplificados para que coincidan con la limpieza de Arnold
 GATILLOS_BUSQUEDA = [
-    'busca en youtube', 'reproduce el video de', 'reproduce', 'pon musica de', 
-    'pon el video de', 'pon', 'busca en internet', 'busca que es', 'investiga sobre', 
-    'quien es', 'googlea', 'busca', 'que es'
+    'buscar youtube', 'reproducir video', 'reproducir', 'poner musica', 
+    'poner video', 'poner', 'buscar internet', 'buscar', 'investigar', 
+    'googlear', 'significar', 'que ser'
 ]
 
-def entrenar ():
+def entrenar():
     if not os.path.exists(CSV_PATH):
         raise FileNotFoundError(f"No se encontro el archivo: {CSV_PATH}")
 
     df = pd.read_csv(CSV_PATH)
 
+    # SOLUCIÓN CRÍTICA: Limpiamos el CSV con la función de Arnold ANTES de entrenar
+    # Así el modelo aprende que "abrir navegador" es lo mismo que "abre el navegador"
+    df['texto_limpio'] = df['texto'].apply(LimpiarTexto)
+
     vectorizador = TfidfVectorizer(ngram_range=(1, 2)) 
-    x = vectorizador.fit_transform(df['texto'])
+    x = vectorizador.fit_transform(df['texto_limpio']) # Entrenamos con texto limpio
     y = df['intencion']
 
     modelo = LogisticRegression(class_weight='balanced')
-    modelo.fit(x,y)
+    modelo.fit(x, y)
 
     with open(MODELO_PATH, 'wb') as f: pickle.dump(modelo, f)
     with open(VECTOR_PATH, 'wb') as f: pickle.dump(vectorizador, f)
 
-    print ("Your training has finished")
-    return modelo,vectorizador
+    print("Entrenamiento finalizado con éxito (Datos Limpios).")
+    return modelo, vectorizador
 
 def extraer_entidad(texto_limpio, intencion):
     texto_limpio = texto_limpio.lower()
     
     if intencion in ["BUSCAR_WEB", "BUSCAR_YOUTUBE"]:
         consulta = texto_limpio
+        # Ordenamos gatillos por longitud para no cortar palabras mal
         for gatillo in sorted(GATILLOS_BUSQUEDA, key=len, reverse=True):
             if texto_limpio.startswith(gatillo):
                 consulta = texto_limpio.replace(gatillo, "", 1)
@@ -57,49 +80,25 @@ def extraer_entidad(texto_limpio, intencion):
 
     if intencion in ["ABRIR_APP", "CERRAR_APP"]:
         encontradas = []
-        temp_texto = texto_limpio
-        for app in sorted(APPS_CONOCIDAS, key=len, reverse=True):
-            if app in temp_texto:
+        for app in APPS_CONOCIDAS:
+            if app in texto_limpio:
                 encontradas.append(app)
-                temp_texto = temp_texto.replace(app, "")
         return encontradas if encontradas else None
-
     return None
 
-def detectar_intencion(texto_limpio): # FUNCION PRINCIPAL
+def detectar_intencion(texto_limpio):
+    # Si no existen los archivos o si el CSV cambió, re-entrenamos
     if not os.path.exists(MODELO_PATH) or not os.path.exists(VECTOR_PATH):
         modelo, vectorizador = entrenar()
     else:
         with open(MODELO_PATH, 'rb') as f: modelo = pickle.load(f)
         with open(VECTOR_PATH, 'rb') as f: vectorizador = pickle.load(f)
     
-    texto = texto_limpio.lower()
-    X_entrada = vectorizador.transform([texto])
+    X_entrada = vectorizador.transform([texto_limpio.lower()])
     intencion = modelo.predict(X_entrada)[0]
-
-    entidades = extraer_entidad(texto,intencion)
+    entidades = extraer_entidad(texto_limpio, intencion)
 
     return {
         "intencion": intencion,
         "entidad": entidades
     }
-
-# ESTO ES UN EJEMPLO DE LO QUE DEVOLVERA
-# {
-#     "intencion": "ABRIR_APP",
-#     "entidad": ["firefox", "code"]
-# }
-
-# if __name__ == "__main__":
-
-#     pruebas = [
-#         "abre el brave y el terminal",
-#         "reproduce tuna papita",
-#         "busca que es el esternocleidomastoideo",
-#         "apaga la computadora",
-#         "hola agente"
-#     ]
-#     for p in pruebas:
-#         res = detectar_intencion(p)
-#         print(f"ENTRADA: {p}")
-#         print(f"SALIDA:  {res}\n")

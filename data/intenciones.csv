@@ -98,21 +98,6 @@ busca en youtube trailers de peliculas,BUSCAR_YOUTUBE
 reproduce el podcast de wild project,BUSCAR_YOUTUBE
 reproducir canciones de rock,BUSCAR_YOUTUBE
 pon un tutorial de blender,BUSCAR_YOUTUBE
-corre el script de limpieza,EJECUTAR_SCRIPT
-ejecuta el codigo de respaldo,EJECUTAR_SCRIPT
-inicia la automatizacion,EJECUTAR_SCRIPT
-lanza el proceso de compilacion,EJECUTAR_SCRIPT
-ejecuta mi script de python,EJECUTAR_SCRIPT
-corre el binario,EJECUTAR_SCRIPT
-inicia el despliegue,EJECUTAR_SCRIPT
-ejecutar comando de red,EJECUTAR_SCRIPT
-corre el test unitario,EJECUTAR_SCRIPT
-compila el proyecto,EJECUTAR_SCRIPT
-corre el comando npm start,EJECUTAR_SCRIPT
-ejecuta el bash de instalacion,EJECUTAR_SCRIPT
-lanza el servidor local,EJECUTAR_SCRIPT
-ejecuta la migracion de base de datos,EJECUTAR_SCRIPT
-corre el bot de telegram,EJECUTAR_SCRIPT
 que hora es ahora,INFORMACION
 dime la fecha de hoy,INFORMACION
 como esta el clima,INFORMACION
