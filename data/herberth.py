@@ -90,16 +90,16 @@ def detectar_intencion(texto_limpio): # FUNCION PRINCIPAL
 #     "entidad": ["firefox", "code"]
 # }
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    pruebas = [
-        "abre el brave y el terminal",
-        "reproduce tuna papita",
-        "busca que es el esternocleidomastoideo",
-        "apaga la computadora",
-        "hola agente"
-    ]
-    for p in pruebas:
-        res = detectar_intencion(p)
-        print(f"ENTRADA: {p}")
-        print(f"SALIDA:  {res}\n")
+#     pruebas = [
+#         "abre el brave y el terminal",
+#         "reproduce tuna papita",
+#         "busca que es el esternocleidomastoideo",
+#         "apaga la computadora",
+#         "hola agente"
+#     ]
+#     for p in pruebas:
+#         res = detectar_intencion(p)
+#         print(f"ENTRADA: {p}")
+#         print(f"SALIDA:  {res}\n")

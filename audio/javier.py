@@ -5,73 +5,49 @@ from pynput import keyboard
 import tempfile
 import scipy.io.wavfile as wav
 import os
+import torch
 
-model = whisper.load_model("base")
+# CARGAR EL MODELO FUERA
+print("Cargando modelo Whisper...")
+# Si te sigue dando error de memoria, cambia "medium" por "small"
+device = "cuda" if torch.cuda.is_available() else "cpu"
+MODELO_WHISPER = whisper.load_model("medium").to(device)
 
-samplerate = 16000
-grabando = False
-audio_data = []
+def iniciar_escucha_voz():
+    samplerate = 16000
+    resultado = [""] 
+    estado = {"grabando": False, "audio_data": []}
 
-def callback(indata, frames, time, status):
-    global audio_data, grabando
-    if grabando:
-        audio_data.append(indata.copy())
+    def audio_callback(indata, frames, time, status):
+        if estado["grabando"]:
+            estado["audio_data"].append(indata.copy())
 
-def on_press(key):
-    global grabando, audio_data
+    def on_press(key):
+        if key == keyboard.Key.space and not estado["grabando"]:
+            estado["audio_data"] = []
+            estado["grabando"] = True
 
-    if key == keyboard.Key.space and not grabando:
-        print("🎤 Grabando...")
-        audio_data = []
-        grabando = True
+    def on_release(key):
+        if key == keyboard.Key.space and estado["grabando"]:
+            estado["grabando"] = False
+            if len(estado["audio_data"]) > 0:
+                audio_np = np.concatenate(estado["audio_data"], axis=0)
+                audio_np = (audio_np * 32767).astype(np.int16)
+                
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as f:
+                    wav.write(f.name, samplerate, audio_np)
+                    # Transcribir con el modelo global
+                    result = MODELO_WHISPER.transcribe(f.name)
+                    resultado[0] = result["text"].strip()
+                    os.remove(f.name)
+                return False # Detiene el listener para devolver el string
 
-def on_release(key):
-    global grabando, audio_data
+    stream = sd.InputStream(samplerate=samplerate, channels=1, dtype="float32", callback=audio_callback)
+    stream.start()
 
-    if key == keyboard.Key.space and grabando:
-        grabando = False
-        print("Procesando...")
+    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
 
-        if len(audio_data) == 0:
-            print("No se capturó audio")
-            return
-
-        audio_np = np.concatenate(audio_data, axis=0)
-
-        # convertir a int16
-        audio_np = (audio_np * 32767).astype(np.int16)
-
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as f:
-            wav.write(f.name, samplerate, audio_np)
-
-            result = model.transcribe(f.name)
-            texto = result["text"].strip()
-
-            print("Texto detectado:", texto)
-
-            os.remove(f.name)
-
-stream = sd.InputStream(
-    samplerate=samplerate,
-    channels=1,
-    dtype="float32",
-    callback=callback
-)
-
-stream.start()
-
-print("Mantén presionado ESPACIO para hablar")
-
-with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-    listener.join()       
-
-#pip install pynput sounddevice numpy scipy openai-whisper     
-# sudo apt install ffmpeg      
-# sudo apt install ffmpeg portaudio19-dev         
-# pip install torch --index-url https://download.pytorch.org/whl/cpu        
-# portaudio19-dev → permite compilar y usar backend de audio en Linux. Es requerido por sounddevice.
-# ffmpeg → se usa para procesar, convertir y leer muchos formatos de audio/video (Whisper lo usa internamente).
-# torch → es el motor matemático de redes neuronales que ejecuta Whisper.
-# pynput → detecta el teclado (tu espacio para grabar).
-# numpy y scipy → manipulan la señal de audio.
-# openai-whisper → el modelo de reconocimiento de voz. 
+    stream.stop()
+    stream.close()
+    return resultado[0]
