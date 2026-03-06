@@ -15,63 +15,60 @@ verbos_gatillo = {
     # Multimedia
     "reproducir", "reproduce", "pon", "poner", "escuchar", "ver",
     
-    # Comunicación
-    "enviar", "mandar", "escribir", "responder", "avisar",
-    
-    # Utilidades
-    "traducir", "anotar", "recordar", "definir", "calcular",
-    
-    # Interacción
-    "decir", "di", "repetir", "deletrear"
+}
+# 3. COMANDOS DE SISTEMA (Verbos permitidos que NO activan búsqueda, pero son útiles)
+# Si el usuario dice "caminar", como no está aquí, lo borramos.
+comandos_sistema = {
+    "abrir", "abre", 
+    "cerrar", "cierra", 
+    "apagar", "enciende", "prende", 
+    "ejecutar", "crear", "borrar",
+    "saludar", "despedir", "hola", "adios"
+}
+
+saludos_despedidas = {
+    "hola", "hey", "buenos", "buenas", "dias", "tardes", "noches",
+    "adios", "adiós", "hasta", "luego", "chao", "bye", "nos", "vemos"
 }
 
 def LimpiarTexto(texto):
     tokens = nlp(texto.lower())
     tokensClean = []
     
-    # Esta es la "Bandera". Empieza apagada (False).
     modo_busqueda = False
-    
-    # Tu Regex para detectar archivos con punto (scripts)
     regex = re.compile(r'.+\..+|\..+')
 
     for token in tokens:
         
-        # ---------------------------------------------------------
-        # CASO 1: ¿YA ACTIVAMOS EL MODO BÚSQUEDA?
-        # ---------------------------------------------------------
+        # --- CASO 1: MODO BÚSQUEDA ACTIVO ---
         if modo_busqueda:
-            # Si la bandera está levantada, guardamos TODO (incluido "que", "el", "la")
-            # tal cual lo dijo el usuario (.text), sin lematizar.
             tokensClean.append(token.text)
-            continue # Saltamos al siguiente token
-
-        # ---------------------------------------------------------
-        # CASO 2: ¿ES ESTE TOKEN UN ACTIVADOR? (Ej: "buscar", "reproducir")
-        # ---------------------------------------------------------
-        # Verificamos si la palabra o su lema está en nuestros gatillos
-        if token.text in verbos_gatillo or token.lemma_ in verbos_gatillo:
-            modo_busqueda = True
-            tokensClean.append(token.lemma_) # Guardamos el verbo normalizado (ej: "reproducir")
             continue
 
-        # ---------------------------------------------------------
-        # CASO 3: LIMPIEZA NORMAL (Modo estricto)
-        # ---------------------------------------------------------
-        # Si no estamos buscando, aplicamos las reglas estrictas de siempre:
-        # Quitamos stop words, puntuación y basura.
-        
+        # --- CASO 2: ¿ES UN SALUDO O DESPEDIDA? (NUEVO) ---
+        # Si la palabra está en nuestra lista blanca, la guardamos EXACTA (token.text)
+        # y usamos 'continue' para saltar las reglas de limpieza normales.
+        if token.text in saludos_despedidas:
+            tokensClean.append(token.text)
+            continue
+
+        # --- CASO 3: ¿ES UN GATILLO DE BÚSQUEDA? ---
+        if token.text in verbos_gatillo or token.lemma_ in verbos_gatillo:
+            modo_busqueda = True
+            tokensClean.append(token.lemma_)
+            continue
+
+        # --- CASO 4: LIMPIEZA NORMAL ---
         isScript = bool(regex.match(token.text))
         
-        # Si NO es stop word (o es script) Y NO es basura Y (NO es puntuación o es script)
+        # Filtro estricto: No basura, no stop words (excepto scripts)
         if (not token.is_stop or isScript) and token.text not in stop_word and (not token.is_punct or isScript):
             tokensClean.append(token.lemma_)
 
-    # Unimos todo en una sola cadena de texto
     return " ".join(tokensClean)
 
 
-# texto_sucio = "quiero que busques la lombriz"
+# texto_sucio = "abrir visuals studio code"
 
 # resultado = LimpiarTexto(texto_sucio)
 
