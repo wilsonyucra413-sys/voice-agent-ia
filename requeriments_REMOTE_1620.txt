@@ -1,0 +1,8 @@
+pip install psutil
+
+
+
+Arnold
+pip install spacy
+#modelo nlp pequeño para el español 
+python -m spacy download es_core_news_sm

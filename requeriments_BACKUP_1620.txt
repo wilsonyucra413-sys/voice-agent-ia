@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Cristhian
 pip install psutil
 
@@ -5,6 +6,7 @@ pip install psutil
 Herberth
 pip install pandas scikit-learn
 # tambien use pickle y os pero segun la ia ya vienen por defecto en python
+=======
 pip install psutil
 
 
@@ -13,3 +15,4 @@ Arnold
 pip install spacy
 #modelo nlp pequeño para el español 
 python -m spacy download es_core_news_sm
+>>>>>>> npl-arnold
