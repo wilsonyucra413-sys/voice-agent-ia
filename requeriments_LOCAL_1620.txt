@@ -1,7 +1,0 @@
-Cristhian
-pip install psutil
-
-
-Herberth
-pip install pandas scikit-learn
-# tambien use pickle y os pero segun la ia ya vienen por defecto en python
