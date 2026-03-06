@@ -1,7 +1,7 @@
 from executor.executor import ejecutar_accion
 
 # Prueba abrir una app
-resultado = ejecutar_accion("CERRAR_APP", "gnome-calculator")
+resultado = ejecutar_accion("ABRIR_APP", "vscode")
 # firefox
 # gnome-calculator
 # APAGAR_EQUIPO

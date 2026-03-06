@@ -5,20 +5,75 @@ import urllib.parse
 import random
 from verifier.verifier import validar_apertura_app
 
+MAPA_APPS = {
+
+    # Navegadores
+    "google chrome": "google-chrome",
+    "chrome": "google-chrome",
+    "firefox": "firefox",
+    "brave": "brave-browser",
+    "opera": "opera",
+    "edge": "microsoft-edge",
+
+    # Desarrollo
+    "visual studio code": "code",
+    "vscode": "code",
+    "visual studio": "code",
+    "sublime text": "subl",
+    "pycharm": "pycharm",
+    "terminal": "gnome-terminal",
+    "consola": "gnome-terminal",
+    "shell": "gnome-terminal",
+
+    # Ofimática
+    "bloc de notas": "gedit",
+    "editor de texto": "gedit",
+    "notepad": "gedit",
+    "word": "libreoffice --writer",
+    "excel": "libreoffice --calc",
+    "powerpoint": "libreoffice --impress",
+
+    # Media
+    "spotify": "spotify",
+    "vlc": "vlc",
+    "steam": "steam",
+
+    # Sistema
+    "calculadora": "gnome-calculator",
+    "archivos": "nautilus",
+    "carpetas": "nautilus",
+    "explorador": "nautilus",
+    "configuracion": "gnome-control-center",
+    "ajustes": "gnome-control-center",
+
+    # Comunicación
+    "discord": "discord",
+    "slack": "slack",
+    "telegram": "telegram-desktop",
+    "zoom": "zoom"
+}
+
 
 def abrir_app(nombre_app):
 
-    valido, mensaje = validar_apertura_app(nombre_app)
+    nombre_app = nombre_app.lower()
+
+    if nombre_app not in MAPA_APPS:
+        return False, f"No conozco la aplicación '{nombre_app}'"
+
+    comando_real = MAPA_APPS[nombre_app]
+
+    valido, mensaje = validar_apertura_app(comando_real.split()[0])
 
     if not valido:
         return False, mensaje
 
     try:
-        subprocess.Popen(nombre_app)
+        subprocess.Popen(comando_real.split())
         time.sleep(3)
 
         for proceso in psutil.process_iter(['name']):
-            if proceso.info['name'] and nombre_app.lower() in proceso.info['name'].lower():
+            if proceso.info['name'] and comando_real.split()[0] in proceso.info['name'].lower():
                 return True, f"{nombre_app} se abrió correctamente"
 
         return False, f"No se detectó el proceso {nombre_app}"
