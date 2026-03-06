@@ -5,7 +5,7 @@ from spacy import displacy
 npl=spacy.load("es_core_news_sm")
 
 #estas palabras son un por si acaso la libreria no considera estas palabras un stop word pero lo dudo
-stop_word=["eh","ah","mmm","este","por favor","podrias","quisiera","amm","gracias"]
+stop_word=["eh","ah","mmm","este","por favor","podrias","quisiera","amm","gracias","perra","puta","puto","zorra","carajo","mierda"]
 def LimpiarTexto(texto):
     #al pasarle el texto a spacy(npl) se convierte cada palabra en token
 
@@ -31,13 +31,13 @@ def LimpiarTexto(texto):
         # .is_alpha," devuelve true o false si esta compuesta solo por letras")
         # .like_url," devuelve true o false si tiene enlace url")
         #reglas para el limpiado, que no haya mayuscualas, no se permite emojis, eliminacion de titubeos o muletillas
-        if chunk.is_stop==False and chunk.text.lower() not in stop_word and (chunk.is_alpha or chunk.is_digit or script or chunk.is_punct):
+        if chunk.is_stop==False and chunk.text.lower() not in stop_word and (chunk.is_alpha or chunk.is_digit or script):
             tokensClean.append(chunk.lemma_.lower())
 
     return " ".join(tokensClean)
 
 
-texto_sucio = "podrias abrir el firefox y chrome y ejecutar estos 2 script uno llamado .gitignore y hola.txt"
+texto_sucio = "!!!podrias abrir el firefox y chrome y ejecutar estos 2 script uno llamado .gitignore y hola.txt"
 
 resultado = LimpiarTexto(texto_sucio)
 
